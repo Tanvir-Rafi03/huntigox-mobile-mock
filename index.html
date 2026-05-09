@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HuntigoX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#060606;
+  --bg2:#0e0e0e;
+  --bg3:#161616;
+  --text:#f0f0f0;
+  --text2:#888;
+  --text3:#444;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.11);
+  --btn-bg:#f0f0f0;
+  --btn-text:#060606;
+  --card:rgba(255,255,255,0.035);
+  --nav-bg:rgba(6,6,6,0.8);
+  --shot-bg:#0c0c0c;
+  --t:0.3s ease;
+}
+[data-theme="light"]{
+  --bg:#ffffff;
+  --bg2:#f7f7f7;
+  --bg3:#ededed;
+  --text:#0a0a0a;
+  --text2:#666;
+  --text3:#bbb;
+  --border:rgba(0,0,0,0.07);
+  --border2:rgba(0,0,0,0.12);
+  --btn-bg:#0a0a0a;
+  --btn-text:#ffffff;
+  --card:rgba(0,0,0,0.03);
+  --nav-bg:rgba(255,255,255,0.85);
+  --shot-bg:#f0f0f0;
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,sans-serif;
+  background:var(--bg);color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  transition:background var(--t),color var(--t);
+  overflow-x:hidden;
+}
+.page{max-width:430px;margin:0 auto;position:relative}
+
+/* ──────────── NAVBAR ──────────── */
+.nav{
+  position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;z-index:999;
+  padding:13px 18px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--nav-bg);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  transition:background var(--t),border-color var(--t);
+}
+.nav-logo{
+  font-size:17px;font-weight:700;letter-spacing:-0.03em;
+  color:var(--text);transition:color var(--t);
+}
+.nav-right{display:flex;align-items:center;gap:10px}
+
+/* Theme toggle — small icon only */
+.theme-btn{
+  width:32px;height:32px;border-radius:8px;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background var(--t),border-color var(--t);
+  flex-shrink:0;
+}
+.theme-btn svg{
+  width:14px;height:14px;stroke:var(--text2);fill:none;
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+  transition:stroke var(--t);
+}
+#icon-sun{display:none}
+
+.nav-login{
+  font-size:13px;font-weight:500;color:var(--text2);
+  text-decoration:none;letter-spacing:-0.01em;
+  transition:color .2s;
+  white-space:nowrap;
+}
+.nav-login:hover{color:var(--text)}
+.nav-cta{
+  padding:7px 14px;border-radius:8px;
+  background:var(--btn-bg);color:var(--btn-text);
+  font-size:13px;font-weight:600;letter-spacing:-0.01em;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:opacity .2s,transform .15s;white-space:nowrap;
+}
+.nav-cta:active{transform:scale(0.97);opacity:.85}
+
+/* ──────────── HERO ──────────── */
+.hero{
+  min-height:100svh;
+  display:flex;flex-direction:column;
+  padding-top:90px;
+  position:relative;overflow:hidden;
+  background:var(--bg);
+  transition:background var(--t);
+}
+
+/* Subtle grid behind hero */
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(var(--border) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:42px 42px;
+  pointer-events:none;
+}
+/* Radial mask on grid */
+.hero-grid::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 100% 80% at 50% 40%,transparent 10%,var(--bg) 80%);
+  transition:background var(--t);
+}
+
+.hero-text{
+  position:relative;z-index:2;
+  padding:40px 24px 0;
+  display:flex;flex-direction:column;align-items:flex-start;
+}
+
+.hero-h{
+  font-size:clamp(38px,11vw,52px);
+  font-weight:800;letter-spacing:-0.045em;line-height:1.03;
+  color:var(--text);margin-bottom:16px;
+  transition:color var(--t);
+}
+.hero-h .dim{
+  color:var(--text2);
+  transition:color var(--t);
+}
+
+.hero-sub{
+  font-size:15px;line-height:1.7;color:var(--text2);
+  max-width:300px;margin-bottom:32px;
+  transition:color var(--t);
+}
+
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+.btn-fill{
+  padding:11px 20px;border-radius:9px;
+  background:var(--btn-bg);color:var(--btn-text);
+  font-size:14px;font-weight:600;letter-spacing:-0.01em;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:opacity .2s,transform .15s;
+}
+.btn-fill:active{transform:scale(0.97);opacity:.85}
+.btn-ghost{
+  padding:11px 20px;border-radius:9px;
+  background:transparent;color:var(--text2);
+  font-size:14px;font-weight:500;
+  text-decoration:none;border:1px solid var(--border2);cursor:pointer;
+  transition:color .2s,border-color .2s,transform .15s;
+}
+.btn-ghost:active{transform:scale(0.97)}
+
+/* Hero screenshot — full-width, blended */
+.hero-shot{
+  position:relative;z-index:2;
+  margin-top:44px;
+  flex:1;
+}
+.hero-shot-fade{
+  position:absolute;top:0;left:0;right:0;height:90px;
+  background:linear-gradient(var(--bg),transparent);
+  z-index:3;pointer-events:none;
+  transition:background var(--t);
+}
+.hero-shot-ui{
+  background:var(--shot-bg);
+  padding:0;min-height:260px;
+  transition:background var(--t);
+}
+
+/* Job feed inside hero */
+.feed-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 18px 12px;
+  border-bottom:1px solid var(--border);
+}
+.feed-title{font-size:13px;font-weight:700;color:var(--text);letter-spacing:-0.01em;transition:color var(--t)}
+.feed-filter{
+  display:flex;align-items:center;gap:5px;
+  font-size:10px;font-weight:600;color:var(--text3);
+  letter-spacing:.06em;text-transform:uppercase;
+  transition:color var(--t);
+}
+.feed-filter svg{width:11px;height:11px;stroke:var(--text3);fill:none;stroke-width:2;stroke-linecap:round;transition:stroke var(--t)}
+
+.jrow{
+  display:flex;align-items:center;gap:13px;
+  padding:12px 18px;
+  border-bottom:1px solid var(--border);
+  transition:border-color var(--t);
+}
+.jrow:last-child{border-bottom:none}
+.jrow-icon{
+  width:32px;height:32px;border-radius:9px;
+  background:var(--bg3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:background var(--t),border-color var(--t);
+}
+.jrow-icon svg{width:14px;height:14px;stroke:var(--text2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke var(--t)}
+.jrow-info{flex:1;min-width:0}
+.jrow-title{font-size:13px;font-weight:600;color:var(--text);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color var(--t)}
+.jrow-meta{font-size:11px;color:var(--text3);margin-top:2px;transition:color var(--t)}
+.jrow-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.jrow-salary{font-size:11px;font-weight:600;color:var(--text2);transition:color var(--t)}
+.vdot{
+  display:inline-flex;align-items:center;gap:3px;
+  padding:2px 6px;border-radius:4px;
+  background:rgba(52,211,153,.09);border:1px solid rgba(52,211,153,.18);
+}
+.vdot svg{width:8px;height:8px;stroke:#34d399;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.vdot span{font-size:8px;font-weight:700;color:#34d399;letter-spacing:.04em}
+[data-theme="light"] .vdot{background:rgba(5,150,105,.07);border-color:rgba(5,150,105,.18)}
+[data-theme="light"] .vdot svg{stroke:#059669}
+[data-theme="light"] .vdot span{color:#059669}
+
+/* ──────────── SECTION BASE ──────────── */
+.sec{
+  border-top:1px solid var(--border);
+  background:var(--bg);
+  transition:border-color var(--t),background var(--t);
+}
+.sec-in{padding:56px 24px 0}
+
+.sec-num{
+  font-size:11px;font-weight:600;letter-spacing:.1em;
+  color:var(--text3);margin-bottom:14px;
+  font-variant-numeric:tabular-nums;
+  transition:color var(--t);
+}
+.sec-h{
+  font-size:27px;font-weight:800;letter-spacing:-0.035em;line-height:1.1;
+  color:var(--text);margin-bottom:12px;transition:color var(--t);
+}
+.sec-b{
+  font-size:15px;line-height:1.75;color:var(--text2);
+  transition:color var(--t);max-width:360px;
+}
+
+/* Full-width blended screenshot */
+.shot{
+  margin-top:36px;
+  position:relative;
+}
+.shot-fade{
+  position:absolute;top:0;left:0;right:0;height:70px;
+  background:linear-gradient(var(--bg),transparent);
+  z-index:2;pointer-events:none;
+  transition:background var(--t);
+}
+.shot-ui{
+  background:var(--shot-bg);
+  transition:background var(--t);
+}
+
+/* ──────────── 1.0 VERIFYME SHOT ──────────── */
+.verify-ui{padding:20px 18px 28px}
+.verify-steps{display:flex;flex-direction:column;gap:1px}
+.vstep{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;background:var(--bg3);
+  transition:background var(--t);
+}
+.vstep:first-child{border-radius:10px 10px 0 0}
+.vstep:last-child{border-radius:0 0 10px 10px;margin-bottom:16px}
+.vstep-check{
+  width:20px;height:20px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.vstep-check.done{background:rgba(52,211,153,.15)}
+.vstep-check.active{background:rgba(255,255,255,.08)}
+[data-theme="light"] .vstep-check.active{background:rgba(0,0,0,.06)}
+.vstep-check svg{width:10px;height:10px;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.vstep-check.done svg{stroke:#34d399}
+[data-theme="light"] .vstep-check.done svg{stroke:#059669}
+.vstep-check.active svg{stroke:var(--text2)}
+.vstep-label{font-size:12px;font-weight:600;color:var(--text);letter-spacing:-.01em;flex:1;transition:color var(--t)}
+.vstep-status{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.04em;text-transform:uppercase;transition:color var(--t)}
+.vstep-status.done{color:#34d399}
+[data-theme="light"] .vstep-status.done{color:#059669}
+.vstep-status.live{color:var(--text2)}
+.verify-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px;border-radius:10px;
+  background:var(--bg3);border:1px solid var(--border2);
+  transition:background var(--t),border-color var(--t);
+}
+.vf-label{font-size:11px;color:var(--text2);transition:color var(--t)}
+.vf-status{
+  display:flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:700;color:#34d399;
+}
+[data-theme="light"] .vf-status{color:#059669}
+.vf-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* ──────────── 2.0 LIVE HIRING SHOT ──────────── */
+.live-ui{padding:0}
+.live-map{
+  height:140px;position:relative;overflow:hidden;
+  background:var(--bg2);
+  transition:background var(--t);
+}
+.live-map::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.live-map-fade{position:absolute;top:0;left:0;right:0;height:50px;background:linear-gradient(var(--shot-bg),transparent);z-index:2;transition:background var(--t)}
+.map-you{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;
+}
+.map-you-dot{
+  width:12px;height:12px;border-radius:50%;
+  background:var(--text);position:relative;
+}
+.map-you-dot::after{
+  content:'';position:absolute;inset:-5px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.2);
+  transition:border-color var(--t);
+}
+[data-theme="light"] .map-you-dot::after{border-color:rgba(0,0,0,.15)}
+.map-match{
+  position:absolute;width:8px;height:8px;border-radius:50%;
+  background:var(--text2);opacity:.55;
+}
+.live-result{
+  padding:16px 18px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--shot-bg);
+  transition:background var(--t);
+}
+.lr-left{}
+.lr-title{font-size:13px;font-weight:700;color:var(--text);letter-spacing:-.01em;margin-bottom:3px;transition:color var(--t)}
+.lr-sub{font-size:11px;color:var(--text2);transition:color var(--t)}
+.lr-right{text-align:right}
+.lr-dist{font-size:20px;font-weight:800;color:var(--text);letter-spacing:-.04em;transition:color var(--t)}
+.lr-unit{font-size:10px;color:var(--text3);font-weight:600;transition:color var(--t)}
+
+/* ──────────── 3.0 LMIA SHOT ──────────── */
+.lmia-ui{padding:20px 18px 28px}
+.lmia-card{
+  border-radius:10px;border:1px solid var(--border2);
+  background:var(--bg3);overflow:hidden;margin-bottom:10px;
+  transition:background var(--t),border-color var(--t);
+}
+.lmia-card-h{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px;border-bottom:1px solid var(--border);
+  transition:border-color var(--t);
+}
+.lmia-card-title{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-.01em;transition:color var(--t)}
+.lmia-pill{
+  font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 8px;border-radius:4px;
+}
+.lmia-pill.filed{background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.2)}
+.lmia-pill.review{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.2)}
+[data-theme="light"] .lmia-pill.filed{background:rgba(5,150,105,.09);color:#059669;border-color:rgba(5,150,105,.2)}
+[data-theme="light"] .lmia-pill.review{background:rgba(180,130,0,.09);color:#b48000;border-color:rgba(180,130,0,.2)}
+.lmia-card-body{padding:12px 14px}
+.lmia-row{display:flex;justify-content:space-between;margin-bottom:8px}
+.lmia-key{font-size:10px;color:var(--text3);letter-spacing:.04em;text-transform:uppercase;transition:color var(--t)}
+.lmia-val{font-size:10px;font-weight:600;color:var(--text2);transition:color var(--t)}
+.lmia-bar-wrap{margin-top:4px}
+.lmia-bar-label{display:flex;justify-content:space-between;margin-bottom:5px}
+.lmia-bar-label span{font-size:9px;color:var(--text3);transition:color var(--t)}
+.lmia-bar-track{height:3px;background:var(--border2);border-radius:2px;overflow:hidden;transition:background var(--t)}
+.lmia-bar-fill{height:100%;border-radius:2px;background:var(--text)}
+
+/* ──────────── 4.0 TALKTRACK SHOT ──────────── */
+.talk-ui{padding:16px 18px 24px}
+.talk-header{
+  display:flex;align-items:center;gap:10px;
+  padding-bottom:12px;border-bottom:1px solid var(--border);margin-bottom:12px;
+  transition:border-color var(--t);
+}
+.talk-avatar{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--bg3);display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;border:1px solid var(--border2);
+  transition:background var(--t),border-color var(--t);
+}
+.talk-avatar svg{width:13px;height:13px;stroke:var(--text2);fill:none;stroke-width:1.8;stroke-linecap:round;transition:stroke var(--t)}
+.talk-name{font-size:12px;font-weight:700;color:var(--text);letter-spacing:-.01em;transition:color var(--t)}
+.talk-co{font-size:10px;color:var(--text3);transition:color var(--t)}
+.online{width:7px;height:7px;border-radius:50%;background:#34d399;margin-left:auto;flex-shrink:0}
+[data-theme="light"] .online{background:#059669}
+
+.msg{margin-bottom:8px}
+.msg-bubble{
+  display:inline-block;
+  padding:9px 12px;border-radius:12px;
+  font-size:12px;line-height:1.5;
+  max-width:80%;
+}
+.msg-in .msg-bubble{background:var(--bg3);color:var(--text);border-radius:3px 12px 12px 12px;transition:background var(--t),color var(--t)}
+.msg-out{text-align:right}
+.msg-out .msg-bubble{background:var(--btn-bg);color:var(--btn-text);border-radius:12px 3px 12px 12px}
+.msg-time{font-size:9px;color:var(--text3);margin-top:3px;transition:color var(--t)}
+.msg-out .msg-time{text-align:right}
+
+.talk-input{
+  display:flex;align-items:center;gap:8px;
+  margin-top:12px;padding:9px 12px;border-radius:10px;
+  background:var(--bg3);border:1px solid var(--border2);
+  transition:background var(--t),border-color var(--t);
+}
+.talk-input-text{font-size:11px;color:var(--text3);flex:1;transition:color var(--t)}
+.talk-send{
+  width:24px;height:24px;border-radius:6px;
+  background:var(--btn-bg);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.talk-send svg{width:11px;height:11px;stroke:var(--btn-text);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ──────────── STATS ──────────── */
+.stats-sec{border-top:1px solid var(--border);background:var(--bg);transition:border-color var(--t),background var(--t)}
+.stats-in{padding:56px 24px}
+.stats-big{
+  font-size:48px;font-weight:800;letter-spacing:-.05em;
+  color:var(--text);line-height:1;margin-bottom:14px;
+  transition:color var(--t);
+}
+.stats-prose{
+  font-size:15px;line-height:1.75;color:var(--text2);
+  margin-bottom:40px;transition:color var(--t);
+}
+.stats-row{
+  display:grid;grid-template-columns:1fr 1fr;
+  border-top:1px solid var(--border);
+  transition:border-color var(--t);
+}
+.stat{
+  padding:24px 0;
+  border-bottom:1px solid var(--border);
+  transition:border-color var(--t);
+  opacity:0;transform:translateY(8px);
+}
+.stat:nth-child(odd){padding-right:20px;border-right:1px solid var(--border)}
+.stat:nth-child(even){padding-left:20px}
+.stat.vis{animation:up .5s ease forwards}
+.stat:nth-child(2).vis{animation-delay:.07s}
+.stat:nth-child(3).vis{animation-delay:.14s}
+.stat:nth-child(4).vis{animation-delay:.21s}
+@keyframes up{to{opacity:1;transform:translateY(0)}}
+.stat-n{font-size:28px;font-weight:800;letter-spacing:-.04em;color:var(--text);margin-bottom:4px;transition:color var(--t)}
+.stat-l{font-size:12px;color:var(--text2);line-height:1.4;transition:color var(--t)}
+
+/* ──────────── HERO GLOW ──────────── */
+.hero-glow{
+  position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+  width:340px;height:340px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.045) 0%,transparent 65%);
+  pointer-events:none;z-index:1;
+}
+[data-theme="light"] .hero-glow{background:radial-gradient(circle,rgba(0,0,0,0.025) 0%,transparent 65%)}
+
+/* ──────────── TESTIMONIAL ──────────── */
+.quote-sec{border-top:1px solid var(--border);background:var(--bg);transition:border-color var(--t),background var(--t)}
+.quote-in{padding:56px 24px}
+
+/* Carousel — horizontal scroll */
+.carousel{
+  display:flex;gap:12px;
+  overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  margin:0 -24px;padding:0 24px;
+  padding-right:48px;
+}
+.carousel::-webkit-scrollbar{display:none}
+.c-slide{
+  flex:0 0 82%;scroll-snap-align:start;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:16px;padding:24px;
+  opacity:1;position:relative;pointer-events:auto;
+  transition:background var(--t),border-color var(--t);
+}
+
+.quote-text{
+  font-size:19px;font-weight:500;letter-spacing:-.02em;line-height:1.55;
+  color:var(--text);margin-bottom:28px;font-style:italic;
+  transition:color var(--t);
+}
+.quote-attr{display:flex;align-items:center;gap:12px}
+.quote-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:background var(--t),border-color var(--t);
+}
+.quote-avatar svg{width:14px;height:14px;stroke:var(--text2);fill:none;stroke-width:1.8;stroke-linecap:round;transition:stroke var(--t)}
+.quote-name{font-size:13px;font-weight:600;color:var(--text);letter-spacing:-.01em;transition:color var(--t)}
+.quote-role{font-size:11px;color:var(--text3);margin-top:2px;transition:color var(--t)}
+
+/* Dots */
+.c-dots{display:flex;align-items:center;gap:7px;margin-top:32px}
+.c-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--text3);cursor:pointer;
+  transition:background .3s,transform .3s;border:none;padding:0;
+}
+.c-dot.on{background:var(--text);transform:scale(1.3)}
+
+/* ──────────── BOTTOM CTA ──────────── */
+.bcta-sec{border-top:1px solid var(--border);background:var(--bg);transition:border-color var(--t),background var(--t)}
+.bcta-in{
+  padding:64px 24px 72px;
+  display:flex;flex-direction:column;align-items:flex-start;gap:24px;
+}
+.bcta-h{
+  font-size:clamp(30px,9vw,40px);font-weight:800;letter-spacing:-.04em;line-height:1.08;
+  color:var(--text);transition:color var(--t);
+}
+.bcta-h .dim{color:var(--text2);transition:color var(--t)}
+.bcta-btns{display:flex;gap:10px;flex-wrap:wrap}
+
+/* ──────────── FOOTER ──────────── */
+footer{
+  border-top:1px solid var(--border);
+  padding:40px 24px;background:var(--bg);
+  transition:background var(--t),border-color var(--t);
+}
+.f-top{margin-bottom:28px}
+.f-logo{font-size:16px;font-weight:700;letter-spacing:-.03em;color:var(--text);margin-bottom:4px;transition:color var(--t)}
+.f-tag{font-size:12px;color:var(--text3);transition:color var(--t)}
+.f-links{display:flex;flex-wrap:wrap;gap:x 18px;gap:8px 18px;margin-bottom:28px}
+.f-links a{font-size:12px;color:var(--text2);text-decoration:none;transition:color .2s}
+.f-links a:hover{color:var(--text)}
+.f-copy{font-size:11px;color:var(--text3);transition:color var(--t)}
+
+/* ──────────── REVEAL ──────────── */
+.rev{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
+.rev.vis{opacity:1;transform:translateY(0)}
+.rev.d1{transition-delay:.1s}
+.rev.d2{transition-delay:.2s}
+.rev.d3{transition-delay:.3s}
+
+@media(prefers-reduced-motion:reduce){
+  .rev,.stat{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- NAV -->
+<nav class="nav">
+  <span class="nav-logo">HuntigoX</span>
+  <div class="nav-right">
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+      <svg id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <a href="#" class="nav-login">Log in</a>
+    <a href="#" class="nav-cta">Sign up</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-text">
+    <h1 class="hero-h">
+      The hiring platform<br>
+      <span class="dim">for modern Canada.</span>
+    </h1>
+    <p class="hero-sub">AI-powered, fraud-proof, LMIA-compliant. Built for candidates who work hard and deserve better.</p>
+  </div>
+
+  <div class="hero-shot">
+    <div class="hero-shot-fade"></div>
+    <div class="hero-shot-ui">
+      <div class="feed-header">
+        <span class="feed-title">Jobs for you</span>
+        <span class="feed-filter">
+          <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+          Filter
+        </span>
+      </div>
+      <!-- Job rows -->
+      <div class="jrow">
+        <div class="jrow-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <div class="jrow-info">
+          <div class="jrow-title">Software Engineer</div>
+          <div class="jrow-meta">TechCorp · Toronto, ON · 2.4 km</div>
+        </div>
+        <div class="jrow-right">
+          <span class="jrow-salary">$95–120k</span>
+          <div class="vdot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Verified</span></div>
+        </div>
+      </div>
+      <div class="jrow">
+        <div class="jrow-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <div class="jrow-info">
+          <div class="jrow-title">UX Designer</div>
+          <div class="jrow-meta">Maple Studios · Vancouver, BC · 4.1 km</div>
+        </div>
+        <div class="jrow-right">
+          <span class="jrow-salary">$80–100k</span>
+          <div class="vdot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Verified</span></div>
+        </div>
+      </div>
+      <div class="jrow">
+        <div class="jrow-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="jrow-info">
+          <div class="jrow-title">Healthcare Worker</div>
+          <div class="jrow-meta">MedGroup · Calgary, AB · 1.8 km</div>
+        </div>
+        <div class="jrow-right">
+          <span class="jrow-salary">$72–88k</span>
+          <div class="vdot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Verified</span></div>
+        </div>
+      </div>
+      <div class="jrow" style="opacity:.35">
+        <div class="jrow-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div>
+        <div class="jrow-info">
+          <div class="jrow-title">Customer Support</div>
+          <div class="jrow-meta">NorthTech · Ottawa, ON · 3.2 km</div>
+        </div>
+        <div class="jrow-right">
+          <span class="jrow-salary">$55–65k</span>
+          <div class="vdot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>Verified</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 1.0 VERIFYME -->
+<section class="sec" id="s1">
+  <div class="sec-in">
+    <p class="sec-num rev">1.0</p>
+    <h2 class="sec-h rev d1">Verified<br>by default.</h2>
+    <p class="sec-b rev d2">Every employer, every listing, every candidate — CRA-authenticated before a single message is sent. No exceptions, no shortcuts.</p>
+  </div>
+  <div class="shot">
+    <div class="shot-fade"></div>
+    <div class="shot-ui">
+      <div class="verify-ui">
+        <div class="verify-steps">
+          <div class="vstep">
+            <div class="vstep-check done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="vstep-label">Government ID Check</span>
+            <span class="vstep-status done">Done</span>
+          </div>
+          <div class="vstep">
+            <div class="vstep-check done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="vstep-label">CRA Cross-Reference</span>
+            <span class="vstep-status done">Done</span>
+          </div>
+          <div class="vstep">
+            <div class="vstep-check done"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span class="vstep-label">Biometric Match</span>
+            <span class="vstep-status done">Done</span>
+          </div>
+          <div class="vstep">
+            <div class="vstep-check active"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/></svg></div>
+            <span class="vstep-label">LMIA Eligibility Scan</span>
+            <span class="vstep-status live">Active</span>
+          </div>
+        </div>
+        <div class="verify-footer">
+          <span class="vf-label">Identity Status</span>
+          <span class="vf-status"><span class="vf-dot"></span>Verified · Valid Dec 2025</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2.0 LIVE HIRING -->
+<section class="sec">
+  <div class="sec-in">
+    <p class="sec-num rev">2.0</p>
+    <h2 class="sec-h rev d1">Matched by AI.<br>Within the hour.</h2>
+    <p class="sec-b rev d2">Real-time geo-proximity matching connects you with LMIA-ready, verified employers within 5km. Live updates, not stale listings.</p>
+  </div>
+  <div class="shot">
+    <div class="shot-fade"></div>
+    <div class="shot-ui live-ui">
+      <div class="live-map">
+        <div class="live-map-fade"></div>
+        <!-- Scattered employer dots -->
+        <div class="map-match" style="top:28%;left:24%"></div>
+        <div class="map-match" style="top:42%;left:68%;opacity:.4"></div>
+        <div class="map-match" style="top:66%;left:38%;opacity:.3"></div>
+        <div class="map-match" style="top:32%;left:72%;opacity:.35"></div>
+        <div class="map-match" style="top:74%;left:62%;opacity:.25"></div>
+        <!-- You -->
+        <div class="map-you"><div class="map-you-dot"></div></div>
+      </div>
+      <div class="live-result">
+        <div class="lr-left">
+          <div class="lr-title">3 matches found</div>
+          <div class="lr-sub">LMIA-ready · Ontario · Live</div>
+        </div>
+        <div class="lr-right">
+          <div class="lr-dist">2.4</div>
+          <div class="lr-unit">km away</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3.0 LMIA COMPLIANCE -->
+<section class="sec">
+  <div class="sec-in">
+    <p class="sec-num rev">3.0</p>
+    <h2 class="sec-h rev d1">LMIA compliance,<br>automated.</h2>
+    <p class="sec-b rev d2">We handle the paperwork. Auto-filed LMIA applications, real-time status tracking, and audit-ready documentation — all in one place.</p>
+  </div>
+  <div class="shot">
+    <div class="shot-fade"></div>
+    <div class="shot-ui">
+      <div class="lmia-ui">
+        <div class="lmia-card">
+          <div class="lmia-card-h">
+            <span class="lmia-card-title">TechCorp · Software Engineer</span>
+            <span class="lmia-pill filed">Filed</span>
+          </div>
+          <div class="lmia-card-body">
+            <div class="lmia-row"><span class="lmia-key">Application</span><span class="lmia-val">LMIA-2025-ON-4821</span></div>
+            <div class="lmia-row"><span class="lmia-key">Submitted</span><span class="lmia-val">May 2, 2025</span></div>
+            <div class="lmia-bar-wrap">
+              <div class="lmia-bar-label"><span>Processing</span><span>80%</span></div>
+              <div class="lmia-bar-track"><div class="lmia-bar-fill" style="width:80%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="lmia-card">
+          <div class="lmia-card-h">
+            <span class="lmia-card-title">Maple Studios · UX Designer</span>
+            <span class="lmia-pill review">In Review</span>
+          </div>
+          <div class="lmia-card-body">
+            <div class="lmia-row"><span class="lmia-key">Application</span><span class="lmia-val">LMIA-2025-BC-2204</span></div>
+            <div class="lmia-row"><span class="lmia-key">Submitted</span><span class="lmia-val">May 6, 2025</span></div>
+            <div class="lmia-bar-wrap">
+              <div class="lmia-bar-label"><span>Processing</span><span>35%</span></div>
+              <div class="lmia-bar-track"><div class="lmia-bar-fill" style="width:35%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4.0 TALKTRACK -->
+<section class="sec">
+  <div class="sec-in">
+    <p class="sec-num rev">4.0</p>
+    <h2 class="sec-h rev d1">Every conversation,<br>on record.</h2>
+    <p class="sec-b rev d2">TalkTrack logs every employer–candidate interaction. Fraud-flagged messages are blocked before they reach you.</p>
+  </div>
+  <div class="shot">
+    <div class="shot-fade"></div>
+    <div class="shot-ui">
+      <div class="talk-ui">
+        <div class="talk-header">
+          <div class="talk-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div>
+            <div class="talk-name">Sarah — TechCorp HR</div>
+            <div class="talk-co">TechCorp Inc · Verified Employer</div>
+          </div>
+          <div class="online"></div>
+        </div>
+        <div class="msg msg-in">
+          <div class="msg-bubble">Hi! We'd love to schedule an interview for the Software Engineer role. Are you available Thursday?</div>
+          <div class="msg-time">Today · 10:14 AM</div>
+        </div>
+        <div class="msg msg-out">
+          <div class="msg-bubble">Thursday works perfectly. Looking forward to it!</div>
+          <div class="msg-time">10:16 AM · Read ✓</div>
+        </div>
+        <div class="talk-input">
+          <span class="talk-input-text">Reply to Sarah...</span>
+          <div class="talk-send"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-sec">
+  <div class="stats-in">
+    <div class="stats-big rev" data-t="1200" data-s="+" data-d="0">0+</div>
+    <p class="stats-prose rev d1">
+      HuntigoX powers over 1,200 verified employers across all 13 Canadian provinces — with a 99.7% scam detection rate and zero tolerance for fraud.
+    </p>
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-n" data-t="99.7" data-s="%" data-d="1">0%</div>
+        <div class="stat-l">Scam detection rate</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n" data-t="2847" data-s="" data-d="0">0</div>
+        <div class="stat-l">Active verified listings</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n" data-t="13" data-s="/13" data-d="0">0</div>
+        <div class="stat-l">Provinces covered</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n" data-t="48" data-s="hr" data-d="0">0</div>
+        <div class="stat-l">Avg. time to first match</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="quote-sec">
+  <div class="quote-in">
+    <div class="carousel" id="carousel">
+
+      <div class="c-slide active">
+        <p class="quote-text">"HuntigoX found me a verified employer in 48 hours. Every single listing was real. I've never felt safer in a job search."</p>
+        <div class="quote-attr">
+          <div class="quote-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div>
+            <div class="quote-name">Sarah M.</div>
+            <div class="quote-role">Verified Candidate · Toronto, Ontario</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-slide">
+        <p class="quote-text">"We eliminated recruitment fraud entirely since switching to HuntigoX. Every candidate is CRA-verified before we even speak to them."</p>
+        <div class="quote-attr">
+          <div class="quote-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div>
+            <div class="quote-name">James K.</div>
+            <div class="quote-role">Head of HR · TechCorp Inc · Vancouver</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="c-slide">
+        <p class="quote-text">"The LMIA automation alone saved us weeks of paperwork every month. This platform just works — and it actually does what it promises."</p>
+        <div class="quote-attr">
+          <div class="quote-avatar"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div>
+            <div class="quote-name">Priya S.</div>
+            <div class="quote-role">Operations Manager · Maple Studios · Calgary</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section class="bcta-sec">
+  <div class="bcta-in">
+    <h2 class="bcta-h rev">
+      Built for Canada.<br>
+      <span class="dim">Always protected.</span>
+    </h2>
+    <a href="#" class="btn-fill rev d1">Get Verified</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-top">
+    <div class="f-logo">HuntigoX</div>
+    <div class="f-tag">Canada's Fraud-Free Hiring Network</div>
+  </div>
+  <div class="f-links">
+    <a href="#">Product</a>
+    <a href="#">Pricing</a>
+    <a href="#">Employers</a>
+    <a href="#">Candidates</a>
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="f-copy">© 2025 HuntigoX. All rights reserved.</div>
+</footer>
+
+</div><!-- /page -->
+
+<script>
+// Theme toggle
+const html=document.documentElement;
+const btn=document.getElementById('themeBtn');
+const moon=document.getElementById('icon-moon');
+const sun=document.getElementById('icon-sun');
+let dark=true;
+btn.addEventListener('click',()=>{
+  dark=!dark;
+  html.setAttribute('data-theme',dark?'dark':'light');
+  moon.style.display=dark?'block':'none';
+  sun.style.display=dark?'none':'block';
+});
+
+// Reveal on scroll
+const ro=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');ro.unobserve(e.target)}});
+},{threshold:0.12});
+document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
+
+// Count-up
+function cu(el){
+  const t=parseFloat(el.dataset.t),s=el.dataset.s||'',d=parseInt(el.dataset.d||0);
+  const dur=1400,st=performance.now();
+  (function tick(now){
+    const p=Math.min((now-st)/dur,1),e=1-Math.pow(1-p,3),v=e*t;
+    el.textContent=(t>=1000?Math.floor(v).toLocaleString():v.toFixed(d))+s;
+    if(p<1)requestAnimationFrame(tick);
+  })(performance.now());
+}
+
+// Count-up for big stat
+const bigStat=document.querySelector('.stats-big');
+if(bigStat){
+  const bso=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(e.isIntersecting){cu(bigStat);bso.unobserve(e.target)}});
+  },{threshold:.3});
+  bso.observe(bigStat);
+}
+
+// Testimonial carousel — scroll-driven dots
+const carousel=document.getElementById('carousel');
+const cdots=document.querySelectorAll('.c-dot');
+cdots.forEach(d=>d.addEventListener('click',()=>{
+  const slides=carousel.querySelectorAll('.c-slide');
+  slides[+d.dataset.i].scrollIntoView({behavior:'smooth',block:'nearest',inline:'start'});
+}));
+carousel.addEventListener('scroll',()=>{
+  const i=Math.round(carousel.scrollLeft/(carousel.scrollWidth/3));
+  cdots.forEach((d,idx)=>d.classList.toggle('on',idx===i));
+},{passive:true});
+
+// Count-up for stat grid
+const so=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('vis');
+      const n=e.target.querySelector('.stat-n');
+      if(n)cu(n);
+      so.unobserve(e.target);
+    }
+  });
+},{threshold:.3});
+document.querySelectorAll('.stat').forEach(c=>so.observe(c));
+</script>
+</body>
+</html>
