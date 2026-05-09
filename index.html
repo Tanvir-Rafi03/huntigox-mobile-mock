@@ -67,38 +67,115 @@ body{
   font-size:17px;font-weight:700;letter-spacing:-0.03em;
   color:var(--text);transition:color var(--t);
 }
-.nav-right{display:flex;align-items:center;gap:10px}
+.nav-right{display:flex;align-items:center;gap:12px}
 
-/* Theme toggle — small icon only */
-.theme-btn{
-  width:32px;height:32px;border-radius:8px;
-  background:var(--card);border:1px solid var(--border);
+/* Gliding pill toggle */
+.theme-toggle{
+  width:46px;height:24px;border-radius:999px;
+  background:var(--bg3);border:1px solid var(--border2);
+  position:relative;cursor:pointer;flex-shrink:0;
+  transition:background var(--t),border-color var(--t);
+}
+.toggle-knob{
+  position:absolute;top:2px;left:2px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--text);
   display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:background var(--t),border-color var(--t);
-  flex-shrink:0;
+  transition:transform 0.32s cubic-bezier(0.4,0,0.2,1),background var(--t);
 }
-.theme-btn svg{
-  width:14px;height:14px;stroke:var(--text2);fill:none;
+[data-theme="light"] .toggle-knob{transform:translateX(22px)}
+.toggle-knob svg{
+  width:10px;height:10px;stroke:var(--bg);fill:none;
   stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
-  transition:stroke var(--t);
+  position:absolute;transition:opacity .2s;
 }
-#icon-sun{display:none}
+#icon-sun{opacity:0}
+[data-theme="light"] #icon-moon{opacity:0}
+[data-theme="light"] #icon-sun{opacity:1}
 
 .nav-login{
   font-size:13px;font-weight:500;color:var(--text2);
   text-decoration:none;letter-spacing:-0.01em;
-  transition:color .2s;
-  white-space:nowrap;
+  transition:color .2s;white-space:nowrap;
 }
 .nav-login:hover{color:var(--text)}
+
 .nav-cta{
-  padding:7px 14px;border-radius:8px;
+  padding:7px 16px;border-radius:999px;
   background:var(--btn-bg);color:var(--btn-text);
   font-size:13px;font-weight:600;letter-spacing:-0.01em;
   text-decoration:none;border:none;cursor:pointer;
   transition:opacity .2s,transform .15s;white-space:nowrap;
 }
 .nav-cta:active{transform:scale(0.97);opacity:.85}
+
+/* Menu icon */
+.nav-menu{
+  width:30px;height:30px;border-radius:8px;
+  background:transparent;border:none;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;
+}
+.nav-menu svg{
+  width:16px;height:16px;stroke:var(--text2);fill:none;
+  stroke-width:2;stroke-linecap:round;transition:stroke var(--t);
+}
+
+/* Drawer overlay */
+.drawer-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.55);
+  z-index:1000;opacity:0;pointer-events:none;
+  transition:opacity .3s ease;
+}
+.drawer-overlay.open{opacity:1;pointer-events:auto}
+
+/* Drawer panel */
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;
+  width:272px;max-width:88vw;
+  background:var(--bg2);border-left:1px solid var(--border);
+  z-index:1001;
+  transform:translateX(100%);
+  transition:transform .32s cubic-bezier(0.4,0,0.2,1),background var(--t),border-color var(--t);
+  display:flex;flex-direction:column;
+  padding:20px;
+}
+.drawer.open{transform:translateX(0)}
+
+.drawer-top{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:32px;
+}
+.drawer-logo{
+  font-size:16px;font-weight:700;letter-spacing:-.03em;
+  color:var(--text);transition:color var(--t);
+}
+.drawer-close{
+  width:28px;height:28px;border-radius:7px;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text2);font-size:14px;
+  transition:background var(--t),border-color var(--t);
+}
+
+.drawer-section-label{
+  font-size:10px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text3);
+  margin-bottom:8px;transition:color var(--t);
+}
+.drawer-nav{display:flex;flex-direction:column;gap:2px;margin-bottom:24px}
+.drawer-nav a{
+  font-size:15px;font-weight:500;color:var(--text2);
+  text-decoration:none;padding:9px 10px;border-radius:8px;
+  transition:background .15s,color .15s;letter-spacing:-.01em;
+}
+.drawer-nav a:hover{background:var(--card);color:var(--text)}
+
+.drawer-divider{height:1px;background:var(--border);margin-bottom:24px}
+
+.drawer-actions{display:flex;flex-direction:column;gap:8px}
+.drawer-actions .btn-fill{text-align:center}
+.drawer-actions .btn-ghost{text-align:center}
 
 /* ──────────── HERO ──────────── */
 .hero{
@@ -564,14 +641,50 @@ footer{
 <nav class="nav">
   <span class="nav-logo">HuntigoX</span>
   <div class="nav-right">
-    <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
-      <svg id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      <svg id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    </button>
+    <div class="theme-toggle" id="themeBtn" aria-label="Toggle theme">
+      <div class="toggle-knob" id="toggleKnob">
+        <svg id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </div>
+    </div>
     <a href="#" class="nav-login">Log in</a>
     <a href="#" class="nav-cta">Sign up</a>
+    <button class="nav-menu" aria-label="Menu">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="16" x2="21" y2="16"/></svg>
+    </button>
   </div>
 </nav>
+
+<!-- DRAWER OVERLAY -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-top">
+    <span class="drawer-logo">HuntigoX</span>
+    <button class="drawer-close" id="drawerClose">✕</button>
+  </div>
+  <p class="drawer-section-label">Platform</p>
+  <nav class="drawer-nav">
+    <a href="#">How We Verify</a>
+    <a href="#">For Candidates</a>
+    <a href="#">For Employers</a>
+    <a href="#">Find Jobs</a>
+    <a href="#">LMIA Compliance</a>
+    <a href="#">TalkTrack</a>
+  </nav>
+  <div class="drawer-divider"></div>
+  <p class="drawer-section-label">Company</p>
+  <nav class="drawer-nav">
+    <a href="#">Why HuntigoX</a>
+    <a href="#">Contact</a>
+  </nav>
+  <div style="flex:1"></div>
+  <div class="drawer-actions">
+    <a href="#" class="btn-ghost">Log in</a>
+    <a href="#" class="btn-fill">Get Verified</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -691,8 +804,8 @@ footer{
 <section class="sec">
   <div class="sec-in">
     <p class="sec-num rev">2.0</p>
-    <h2 class="sec-h rev d1">Matched by AI.<br>Within the hour.</h2>
-    <p class="sec-b rev d2">Real-time geo-proximity matching connects you with LMIA-ready, verified employers within 5km. Live updates, not stale listings.</p>
+    <h2 class="sec-h rev d1">LiveMatch<br>Geo-Hiring.</h2>
+    <p class="sec-b rev d2">Real-time geolocation connects verified candidates to job sites near them. Average match radius under 5km — live positions, not stale boards.</p>
   </div>
   <div class="shot">
     <div class="shot-fade"></div>
@@ -823,8 +936,8 @@ footer{
         <div class="stat-l">Provinces covered</div>
       </div>
       <div class="stat">
-        <div class="stat-n" data-t="48" data-s="hr" data-d="0">0</div>
-        <div class="stat-l">Avg. time to first match</div>
+        <div class="stat-n" data-t="4200" data-s="+" data-d="0">0</div>
+        <div class="stat-l">LMIA applications auto-filed</div>
       </div>
     </div>
   </div>
@@ -890,10 +1003,9 @@ footer{
     <div class="f-tag">Canada's Fraud-Free Hiring Network</div>
   </div>
   <div class="f-links">
-    <a href="#">Product</a>
-    <a href="#">Pricing</a>
-    <a href="#">Employers</a>
-    <a href="#">Candidates</a>
+    <a href="#">For Candidates</a>
+    <a href="#">For Employers</a>
+    <a href="#">Find Jobs</a>
     <a href="#">Privacy</a>
     <a href="#">Terms</a>
     <a href="#">Contact</a>
@@ -907,14 +1019,10 @@ footer{
 // Theme toggle
 const html=document.documentElement;
 const btn=document.getElementById('themeBtn');
-const moon=document.getElementById('icon-moon');
-const sun=document.getElementById('icon-sun');
 let dark=true;
 btn.addEventListener('click',()=>{
   dark=!dark;
   html.setAttribute('data-theme',dark?'dark':'light');
-  moon.style.display=dark?'block':'none';
-  sun.style.display=dark?'none':'block';
 });
 
 // Reveal on scroll
@@ -967,6 +1075,17 @@ const so=new IntersectionObserver(es=>{
   });
 },{threshold:.3});
 document.querySelectorAll('.stat').forEach(c=>so.observe(c));
+
+// Drawer open / close
+const drawerOverlay=document.getElementById('drawerOverlay');
+const drawer=document.getElementById('drawer');
+const drawerClose=document.getElementById('drawerClose');
+const menuBtn=document.querySelector('.nav-menu');
+function openDrawer(){drawer.classList.add('open');drawerOverlay.classList.add('open');document.body.style.overflow='hidden'}
+function closeDrawer(){drawer.classList.remove('open');drawerOverlay.classList.remove('open');document.body.style.overflow=''}
+menuBtn.addEventListener('click',openDrawer);
+drawerClose.addEventListener('click',closeDrawer);
+drawerOverlay.addEventListener('click',closeDrawer);
 </script>
 </body>
 </html>
