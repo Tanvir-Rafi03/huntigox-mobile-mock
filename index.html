@@ -506,38 +506,28 @@ body{
 }
 .talk-send svg{width:11px;height:11px;stroke:var(--btn-text);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 
-/* ──────────── STATS ──────────── */
-.stats-sec{border-top:1px solid var(--border);background:var(--bg);transition:border-color var(--t),background var(--t)}
-.stats-in{padding:56px 24px}
-.stats-big{
-  font-size:48px;font-weight:800;letter-spacing:-.05em;
-  color:var(--text);line-height:1;margin-bottom:14px;
+/* ──────────── MANIFESTO ──────────── */
+.manifesto-sec{border-top:1px solid var(--border);background:var(--bg);transition:border-color var(--t),background var(--t)}
+.manifesto-in{padding:56px 24px 64px}
+.manifesto-eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:20px;transition:color var(--t)}
+.manifesto-h{font-size:clamp(26px,8vw,34px);font-weight:800;letter-spacing:-.04em;line-height:1.1;color:var(--text);margin-bottom:40px;transition:color var(--t)}
+.manifesto-rows{border-top:1px solid var(--border);transition:border-color var(--t)}
+.manifesto-row{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:20px;
+  padding:20px 0;border-bottom:1px solid var(--border);
+  transition:border-color var(--t);
+}
+.m-label{
+  font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text3);flex-shrink:0;padding-top:2px;
   transition:color var(--t);
 }
-.stats-prose{
-  font-size:15px;line-height:1.75;color:var(--text2);
-  margin-bottom:40px;transition:color var(--t);
+.m-val{
+  font-size:14px;font-weight:500;color:var(--text2);
+  line-height:1.55;text-align:right;
+  transition:color var(--t);
 }
-.stats-row{
-  display:grid;grid-template-columns:1fr 1fr;
-  border-top:1px solid var(--border);
-  transition:border-color var(--t);
-}
-.stat{
-  padding:24px 0;
-  border-bottom:1px solid var(--border);
-  transition:border-color var(--t);
-  opacity:0;transform:translateY(8px);
-}
-.stat:nth-child(odd){padding-right:20px;border-right:1px solid var(--border)}
-.stat:nth-child(even){padding-left:20px}
-.stat.vis{animation:up .5s ease forwards}
-.stat:nth-child(2).vis{animation-delay:.07s}
-.stat:nth-child(3).vis{animation-delay:.14s}
-.stat:nth-child(4).vis{animation-delay:.21s}
 @keyframes up{to{opacity:1;transform:translateY(0)}}
-.stat-n{font-size:28px;font-weight:800;letter-spacing:-.04em;color:var(--text);margin-bottom:4px;transition:color var(--t)}
-.stat-l{font-size:12px;color:var(--text2);line-height:1.4;transition:color var(--t)}
 
 /* ──────────── HERO GLOW ──────────── */
 .hero-glow{
@@ -915,29 +905,23 @@ footer{
   </div>
 </section>
 
-<!-- STATS -->
-<section class="stats-sec">
-  <div class="stats-in">
-    <div class="stats-big rev" data-t="24847" data-s="+" data-d="0">0+</div>
-    <p class="stats-prose rev d1">
-      Fraud attempts blocked and counting. HuntigoX is the only Canadian hiring platform that verifies every employer, every listing, and every candidate before a single message is sent.
-    </p>
-    <div class="stats-row">
-      <div class="stat">
-        <div class="stat-n" data-t="99.7" data-s="%" data-d="1">0%</div>
-        <div class="stat-l">Scam detection rate</div>
+<!-- MANIFESTO -->
+<section class="manifesto-sec">
+  <div class="manifesto-in">
+    <p class="manifesto-eyebrow rev">Why it matters</p>
+    <h2 class="manifesto-h rev d1">The only fraud-proof<br>hiring platform<br>in Canada.</h2>
+    <div class="manifesto-rows">
+      <div class="manifesto-row rev d1">
+        <span class="m-label">Candidates</span>
+        <span class="m-val">Every employer is CRA-verified before you even apply.</span>
       </div>
-      <div class="stat">
-        <div class="stat-n" data-t="1200" data-s="+" data-d="0">0</div>
-        <div class="stat-l">Verified employers</div>
+      <div class="manifesto-row rev d2">
+        <span class="m-label">Employers</span>
+        <span class="m-val">Every candidate is authenticated before they message you.</span>
       </div>
-      <div class="stat">
-        <div class="stat-n" data-t="4200" data-s="+" data-d="0">0</div>
-        <div class="stat-l">LMIA applications auto-filed</div>
-      </div>
-      <div class="stat">
-        <div class="stat-n" data-t="13" data-s="/13" data-d="0">0</div>
-        <div class="stat-l">Provinces covered</div>
+      <div class="manifesto-row rev d3">
+        <span class="m-label">Canada</span>
+        <span class="m-val">All 13 provinces. Zero fake listings. Zero tolerance for fraud.</span>
       </div>
     </div>
   </div>
@@ -1031,50 +1015,9 @@ const ro=new IntersectionObserver(es=>{
 },{threshold:0.12});
 document.querySelectorAll('.rev').forEach(el=>ro.observe(el));
 
-// Count-up
-function cu(el){
-  const t=parseFloat(el.dataset.t),s=el.dataset.s||'',d=parseInt(el.dataset.d||0);
-  const dur=1400,st=performance.now();
-  (function tick(now){
-    const p=Math.min((now-st)/dur,1),e=1-Math.pow(1-p,3),v=e*t;
-    el.textContent=(t>=1000?Math.floor(v).toLocaleString():v.toFixed(d))+s;
-    if(p<1)requestAnimationFrame(tick);
-  })(performance.now());
-}
-
-// Count-up for big stat
-const bigStat=document.querySelector('.stats-big');
-if(bigStat){
-  const bso=new IntersectionObserver(es=>{
-    es.forEach(e=>{if(e.isIntersecting){cu(bigStat);bso.unobserve(e.target)}});
-  },{threshold:.3});
-  bso.observe(bigStat);
-}
-
 // Testimonial carousel — scroll-driven dots
 const carousel=document.getElementById('carousel');
-const cdots=document.querySelectorAll('.c-dot');
-cdots.forEach(d=>d.addEventListener('click',()=>{
-  const slides=carousel.querySelectorAll('.c-slide');
-  slides[+d.dataset.i].scrollIntoView({behavior:'smooth',block:'nearest',inline:'start'});
-}));
-carousel.addEventListener('scroll',()=>{
-  const i=Math.round(carousel.scrollLeft/(carousel.scrollWidth/3));
-  cdots.forEach((d,idx)=>d.classList.toggle('on',idx===i));
-},{passive:true});
-
-// Count-up for stat grid
-const so=new IntersectionObserver(es=>{
-  es.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add('vis');
-      const n=e.target.querySelector('.stat-n');
-      if(n)cu(n);
-      so.unobserve(e.target);
-    }
-  });
-},{threshold:.3});
-document.querySelectorAll('.stat').forEach(c=>so.observe(c));
+carousel.addEventListener('scroll',()=>{},{passive:true});
 
 // Drawer open / close
 const drawerOverlay=document.getElementById('drawerOverlay');
