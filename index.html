@@ -600,53 +600,70 @@ body{
 
 /* ──────────── FOOTER ──────────── */
 footer{
-  background:linear-gradient(to bottom,#020817 0%,#030f24 40%,#020817 100%);
-  position:relative;overflow:hidden;
+  background:#08090a;
+  border-top:1px solid #23252a;
+  font-size:13px;
 }
-[data-theme="light"] footer{background:var(--bg2)}
-.f-topline{
-  position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(37,99,235,0.5),transparent);
+[data-theme="light"] footer{background:#f7f7f7;border-top:1px solid rgba(0,0,0,0.09)}
+.f-inner{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  column-gap:0;
+  padding:56px 24px 28px;
 }
-.f-topglow{
-  position:absolute;top:0;left:0;right:0;height:90px;
-  background:radial-gradient(ellipse 80% 100% at 50% 0%,rgba(37,99,235,0.07),transparent);
-  pointer-events:none;
+.f-brand{
+  grid-column:1/-1;
+  margin-bottom:40px;
 }
-.f-inner{padding:48px 24px 36px;position:relative;z-index:1}
-.f-brand{margin-bottom:36px}
-.f-logo{font-size:17px;font-weight:700;letter-spacing:-.03em;color:#f0f0f0;margin-bottom:5px}
-[data-theme="light"] .f-logo{color:var(--text)}
-.f-tagline{font-size:13px;font-style:italic;color:#94a3b8;font-family:Georgia,serif;line-height:1.5}
-.f-tagline em{color:rgba(245,158,11,0.75);font-style:inherit}
-[data-theme="light"] .f-tagline{color:var(--text2)}
+.f-logo{
+  font-size:15px;font-weight:700;letter-spacing:-.03em;
+  color:#f7f8f8;margin-bottom:6px;
+}
+[data-theme="light"] .f-logo{color:#0a0a0a}
+.f-tagline{
+  font-size:13px;font-style:italic;
+  color:#8a8f98;font-family:Georgia,serif;line-height:1.5;
+}
+.f-tagline em{color:rgba(245,158,11,0.8);font-style:inherit}
+[data-theme="light"] .f-tagline{color:#6b7280}
 [data-theme="light"] .f-tagline em{color:#b45309}
-.f-nav{display:grid;grid-template-columns:1fr 1fr;gap:32px 16px;margin-bottom:36px}
+.f-col{padding-bottom:32px}
 .f-col-head{
-  font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:#93c5fd;margin-bottom:14px;
+  font-size:13px;font-weight:510;letter-spacing:-0.01em;
+  color:#f7f8f8;margin-bottom:16px;
 }
-[data-theme="light"] .f-col-head{color:#2563eb}
-.f-col-links{display:flex;flex-direction:column;gap:10px}
+[data-theme="light"] .f-col-head{color:#0a0a0a}
+.f-col-links{
+  display:flex;flex-direction:column;gap:2px;
+}
 .f-col-links a{
-  font-size:13px;color:#cbd5e1;text-decoration:none;
-  transition:color .2s,transform .15s;display:inline-block;
+  font-size:13px;color:#8a8f98;text-decoration:none;
+  min-height:28px;display:inline-flex;align-items:center;
+  transition:color .1s;
 }
-.f-col-links a:hover{color:#fbbf24;transform:translateY(-1px)}
-[data-theme="light"] .f-col-links a{color:var(--text2)}
-[data-theme="light"] .f-col-links a:hover{color:#d97706}
-.f-divider{
-  height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent);
-  margin-bottom:24px;
+.f-col-links a:hover{color:#f7f8f8}
+[data-theme="light"] .f-col-links a{color:#6b7280}
+[data-theme="light"] .f-col-links a:hover{color:#0a0a0a}
+.f-bottom{
+  grid-column:1/-1;
+  border-top:1px solid #23252a;
+  padding-top:20px;
+  display:flex;flex-direction:column;gap:10px;
 }
-[data-theme="light"] .f-divider{background:linear-gradient(90deg,transparent,var(--border2),transparent)}
-.f-bottom{display:flex;flex-direction:column;gap:12px}
-.f-copy{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#64748b;line-height:1.6}
-[data-theme="light"] .f-copy{color:var(--text3)}
-.f-badges{display:flex;gap:16px;flex-wrap:wrap}
-.f-badge{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#475569}
-[data-theme="light"] .f-badge{color:var(--text3)}
+[data-theme="light"] .f-bottom{border-top:1px solid rgba(0,0,0,0.09)}
+.f-legal{display:flex;gap:20px;flex-wrap:wrap}
+.f-legal a{
+  font-size:13px;color:#62666d;text-decoration:none;
+  transition:color .1s;
+}
+.f-legal a:hover{color:#f7f8f8}
+[data-theme="light"] .f-legal a{color:#9ca3af}
+[data-theme="light"] .f-legal a:hover{color:#0a0a0a}
+.f-copy{font-size:12px;color:#3d4148;line-height:1.6}
+[data-theme="light"] .f-copy{color:#9ca3af}
+.f-badges{display:flex;gap:14px;flex-wrap:wrap}
+.f-badge{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#3d4148}
+[data-theme="light"] .f-badge{color:#d1d5db}
 
 /* ──────────── REVEAL ──────────── */
 .rev{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
@@ -1018,8 +1035,6 @@ footer{
 
 <!-- FOOTER -->
 <footer>
-  <div class="f-topline"></div>
-  <div class="f-topglow"></div>
   <div class="f-inner">
 
     <div class="f-brand">
@@ -1027,54 +1042,55 @@ footer{
       <div class="f-tagline">Building Canada's Most <em>Trusted</em> Hiring Network</div>
     </div>
 
-    <div class="f-nav">
-      <div class="f-col">
-        <div class="f-col-head">Company</div>
-        <div class="f-col-links">
-          <a href="/#who-we-are">About HuntigoX</a>
-          <a href="/#why-us">Our Vision</a>
-          <a href="/#how-it-works">How It Works</a>
-          <a href="/#platform">Platform</a>
-        </div>
+    <div class="f-col">
+      <div class="f-col-head">Company</div>
+      <div class="f-col-links">
+        <a href="/#who-we-are">About HuntigoX</a>
+        <a href="/#why-us">Our Vision</a>
+        <a href="/#how-it-works">How It Works</a>
+        <a href="/#platform">Platform</a>
       </div>
-      <div class="f-col">
-        <div class="f-col-head">For Job Seekers</div>
-        <div class="f-col-links">
-          <a href="/register/candidate">Create Profile</a>
-          <a href="/candidate/verify">VerifyMe</a>
-          <a href="/jobs">Browse Jobs</a>
-          <a href="/candidate/applications">My Applications</a>
-        </div>
+    </div>
+    <div class="f-col">
+      <div class="f-col-head">For Job Seekers</div>
+      <div class="f-col-links">
+        <a href="/register/candidate">Create Profile</a>
+        <a href="/candidate/verify">VerifyMe</a>
+        <a href="/jobs">Browse Jobs</a>
+        <a href="/candidate/applications">My Applications</a>
       </div>
-      <div class="f-col">
-        <div class="f-col-head">For Employers</div>
-        <div class="f-col-links">
-          <a href="/jobs/post">Post a Job</a>
-          <a href="/employer/verify">BusinessVerify</a>
-          <a href="/employer/lmia">LMIA Support</a>
-          <a href="/register/employer">Register</a>
-        </div>
+    </div>
+    <div class="f-col">
+      <div class="f-col-head">For Employers</div>
+      <div class="f-col-links">
+        <a href="/jobs/post">Post a Job</a>
+        <a href="/employer/verify">BusinessVerify</a>
+        <a href="/employer/lmia">LMIA Support</a>
+        <a href="/register/employer">Register</a>
       </div>
-      <div class="f-col">
-        <div class="f-col-head">Support & Legal</div>
-        <div class="f-col-links">
-          <a href="/messages">Messages</a>
-          <a href="/privacy">Privacy Policy</a>
-          <a href="/terms">Terms of Service</a>
-        </div>
+    </div>
+    <div class="f-col">
+      <div class="f-col-head">Support & Legal</div>
+      <div class="f-col-links">
+        <a href="/messages">Messages</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
       </div>
     </div>
 
-    <div class="f-divider"></div>
-
     <div class="f-bottom">
-      <div class="f-copy">HuntigoX © 2026 · Kenoxis Technologies Inc · Mississauga, Ontario</div>
+      <div class="f-legal">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/messages">Support</a>
+      </div>
       <div class="f-badges">
         <span class="f-badge">PIPEDA</span>
         <span class="f-badge">CRA</span>
         <span class="f-badge">LMIA</span>
         <span class="f-badge">AES-256</span>
       </div>
+      <div class="f-copy">HuntigoX © 2026 · Kenoxis Technologies Inc · Mississauga, Ontario</div>
     </div>
 
   </div>
